@@ -2,6 +2,8 @@ package com.codepath.instagramclient;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -58,13 +60,112 @@ public class PhotosActivity extends AppCompatActivity {
                     for (int i = 0; i < photosJSON.length(); i++) {
                         JSONObject photoJSON = photosJSON.getJSONObject(i);
 
+                        // Ignore videos, we are only showing popular photos
+                        String type = null;
+                        if (photoJSON.optString("type") != null) {
+                            type = photoJSON.getString("type");
+                        }
+                        if (type != null && !type.equalsIgnoreCase("image"))
+                            continue;
+
+                        String userName = null;
+                        String profilePicUrl = null;
+                        String caption = null;
+                        String imageUrl = null;
+                        String location = null;
+                        String creationTimeStr = null;
+                        long creationTime = 0;
+                        int imageWidth = 0;
+                        int imageHeight = 0;
+                        int likesCount = 0;
+
+                        // Get image attributes from JSON
+                        if (photoJSON.optJSONObject("user") != null) {
+                            if (photoJSON.getJSONObject("user").optString("username") != null) {
+                                userName = photoJSON.getJSONObject("user").getString("username");
+                            }
+                            if (photoJSON.getJSONObject("user").optString("profile_picture") != null) {
+                                profilePicUrl = photoJSON.getJSONObject("user").getString("profile_picture");
+                            }
+                        }
+                        if (photoJSON.optJSONObject("caption") != null) {
+                            if (photoJSON.getJSONObject("caption").optString("text") != null) {
+                                caption = photoJSON.getJSONObject("caption").getString("text");
+                            }
+                        }
+                        if (photoJSON.optJSONObject("location") != null) {
+                            if (photoJSON.getString("location") != null && !photoJSON.getString("location").equalsIgnoreCase("null")) {
+                                if (photoJSON.getJSONObject("location").optString("name") != null)
+                                location =photoJSON.getJSONObject("location").getString("name");
+                            }
+                        }
+                        if (photoJSON.optJSONObject("images") != null) {
+                            if (photoJSON.getJSONObject("images").optJSONObject("standard_resolution") != null) {
+                                if (photoJSON.getJSONObject("images").getJSONObject("standard_resolution").optString("url") != null) {
+                                    imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
+                                }
+                                if (photoJSON.getJSONObject("images").getJSONObject("standard_resolution").optInt("width") != 0) {
+                                    imageWidth = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("width");
+                                }
+                                if (photoJSON.getJSONObject("images").getJSONObject("standard_resolution").optInt("height") != 0) {
+                                    imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
+                                }
+                            }
+                        }
+                        if (photoJSON.optLong("created_time") != 0) {
+                            creationTime = photoJSON.getLong("created_time");
+                        }
+                        if (photoJSON.optJSONObject("likes") != null) {
+                            if (photoJSON.getJSONObject("likes").optInt("count") != 0) {
+                                likesCount = photoJSON.getJSONObject("likes").getInt("count");
+                            }
+                        }
+
+                        // Convert creationTime to relative time
+                        creationTimeStr = findRelativeCreationTime(creationTime);
+
                         // Construct a photo object
                         InstagramPhoto photo = new InstagramPhoto();
-                        photo.setUserName(photoJSON.getJSONObject("user").getString("username"));
-                        photo.setCaption(photoJSON.getJSONObject("caption").getString("text"));
-                        photo.setImageUrl(photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url"));
-                        photo.setImageHeight(photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height"));
-                        photo.setLikesCount(photoJSON.getJSONObject("likes").getInt("count"));
+                        if (userName != null) {
+                            photo.setUserName(userName);
+                        }
+                        else {
+                            photo.setUserName("");
+                        }
+                        if (profilePicUrl != null) {
+                            photo.setProfilePicUrl(profilePicUrl);
+                        }
+                        else {
+                            photo.setProfilePicUrl("");
+                        }
+                        if (caption != null) {
+                            photo.setCaption(caption);
+                        }
+                        else {
+                            photo.setCaption("");
+                        }
+                        if (location != null) {
+                            photo.setLocation(location);
+                        }
+                        else {
+                            photo.setLocation("");
+                        }
+                        if (imageUrl != null) {
+                            photo.setImageUrl(imageUrl);
+                        }
+                        else {
+                            photo.setImageUrl("");
+                        }
+                        if (creationTimeStr != null) {
+                            photo.setCreationTimeStr(creationTimeStr);
+                        }
+                        else {
+                            photo.setCreationTimeStr("");
+                        }
+                        photo.setCreationTime(creationTime);
+                        photo.setImageWidth(imageWidth);
+                        photo.setImageHeight(imageHeight);
+                        photo.setLikesCount(likesCount);
 
                         // Add object to the array
                         photos.add(photo);
@@ -82,6 +183,28 @@ public class PhotosActivity extends AppCompatActivity {
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
+    }
+
+    // Convert creation time of the images relative to current time
+    private String findRelativeCreationTime(long creationTime) {
+        String creationTimeStrTemp = null;
+        String creationTimeStr = null;
+        creationTimeStrTemp = DateUtils.getRelativeTimeSpanString(creationTime*1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL).toString();
+        creationTimeStr = creationTimeStrTemp.replaceAll("ago", "");
+        creationTimeStr = creationTimeStr.replaceAll("seconds", "s");
+        creationTimeStr = creationTimeStr.replaceAll("second", "s");
+        creationTimeStr = creationTimeStr.replaceAll("secs", "s");
+        creationTimeStr = creationTimeStr.replaceAll("sec", "s");
+        creationTimeStr = creationTimeStr.replaceAll("minutes", "m");
+        creationTimeStr = creationTimeStr.replaceAll("minute", "m");
+        creationTimeStr = creationTimeStr.replaceAll("mins", "m");
+        creationTimeStr = creationTimeStr.replaceAll("min", "m");
+        creationTimeStr = creationTimeStr.replaceAll("hours", "h");
+        creationTimeStr = creationTimeStr.replaceAll("hour", "h");
+        creationTimeStr = creationTimeStr.replaceAll("hrs", "h");
+        creationTimeStr = creationTimeStr.replaceAll("hr", "h");
+        creationTimeStr = creationTimeStr.replaceAll("\\s", "");
+        return creationTimeStr;
     }
 
     @Override

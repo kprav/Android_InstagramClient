@@ -1,7 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rivProfilePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitCenter"
+        android:paddingTop="15dp"
+        android:paddingLeft="10dp"
+        app:riv_border_width="2dip"
+        app:riv_border_color="#ECEFF1"
+        app:riv_mutate_background="true"
+        app:riv_tile_mode="repeat"
+        app:riv_oval="true" />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/rivProfilePic"
+        android:paddingTop="15dp"
+        android:paddingLeft="5dp"
+        android:background="@drawable/no_border"
+        android:textColor="#0D47A1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="15sp"
+        android:text="Test" />
+
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/rivProfilePic"
+        android:layout_below="@+id/tvUserName"
+        android:layout_alignLeft="@+id/tvUserName"
+        android:paddingLeft="5dp"
+        android:background="@drawable/no_border"
+        android:textColor="#4fa5d5"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Test" />
+
+    <TextView
+        android:id="@+id/tvCreationTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingTop="13dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/no_border"
+        android:textColor="#90A4AE"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="15sp"
+        android:text="Test" />
+
+    <ImageView
+        android:id="@+id/ivCreationTime"
+        android:src="@drawable/clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/tvCreationTime"
+        android:paddingTop="15dp"
+        android:paddingRight="5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY" />
 
     <ImageView
         android:id="@+id/ivPhoto"
@@ -9,10 +81,39 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/rivProfilePic"
+        android:paddingTop="10dp"
         android:adjustViewBounds="true"
         android:minHeight="50dp"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/ivLikes"
+        android:src="@drawable/likes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ivPhoto"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:adjustViewBounds="true"
         android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/tvLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivPhoto"
+        android:layout_toRightOf="@+id/ivLikes"
+        android:paddingTop="12dp"
+        android:paddingLeft="5dp"
+        android:background="@drawable/no_border"
+        android:textColor="#0D47A1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:text="Test" />
 
     <TextView
         android:id="@+id/tvCaption"
@@ -20,9 +121,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/ivPhoto"
+        android:layout_below="@+id/ivLikes"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/no_border"
+        android:textColor="#000000"
         android:ellipsize="end"
         android:maxLines="3"
-        android:text="Test"
-        android:textSize="20sp" />
+        android:textSize="15sp"
+        android:text="Test" />
+
 </RelativeLayout>
