@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -28,6 +29,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvLocation;
         TextView tvLikes;
         TextView tvCreationTime;
+        LinearLayout llComments;
     }
 
     // Constructor
@@ -60,6 +62,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
             viewHolder.tvLocation = (TextView) convertView.findViewById(R.id.tvLocation);
             viewHolder.tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
             viewHolder.tvCreationTime = (TextView) convertView.findViewById(R.id.tvCreationTime);
+            viewHolder.llComments = (LinearLayout) convertView.findViewById(R.id.llComments);
 
             // Assign the cache to the new view
             convertView.setTag(viewHolder);
@@ -82,6 +85,28 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         viewHolder.tvCaption.setText(Html.fromHtml("<b> <font color=\"#0D47A1\">" + photo.getUserName() + "</font> </b> &nbsp;" + photo.getCaption()));
         viewHolder.tvLikes.setText(photo.getLikesCount() + " likes");
         viewHolder.tvCreationTime.setText(photo.getCreationTimeStr());
+
+        // Show top 2 comments if available by inflating listView
+        LinearLayout llComments = (LinearLayout) convertView.findViewById(R.id.llComments);
+        llComments.removeAllViews();
+        if (photo.getComment1() != null) {
+            String comment = photo.getComment1();
+            LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View commentRow = layoutInflater.inflate(R.layout.comment_row, null);
+            TextView tvCommentRow = (TextView) commentRow.findViewById(R.id.tvCommentRow);
+            tvCommentRow.setText(Html.fromHtml(comment));
+            llComments.addView(commentRow);
+        }
+        if (photo.getComment2() != null) {
+            String comment = photo.getComment2();
+            LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View commentRow = layoutInflater.inflate(R.layout.comment_row, null);
+            TextView tvCommentRow = (TextView) commentRow.findViewById(R.id.tvCommentRow);
+            tvCommentRow.setText(Html.fromHtml(comment));
+            llComments.addView(commentRow);
+        }
+
+        viewHolder.llComments = llComments;
 
         // Return the created view
         return convertView;

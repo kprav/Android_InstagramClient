@@ -160,6 +160,37 @@ public class PhotosActivity extends AppCompatActivity {
                         photo.setImageHeight(imageHeight);
                         photo.setLikesCount(likesCount);
 
+                        // Get top 2 comments
+                        String commentUserName = null;
+                        String comment = null;
+                        JSONObject commentsObject = null;
+                        JSONArray comments = null;
+                        if (photoJSON.optJSONObject("comments") != null) {
+                            commentsObject = photoJSON.getJSONObject("comments");
+                        }
+                        if (commentsObject != null && commentsObject.optJSONArray("data") != null) {
+                            comments = commentsObject.getJSONArray("data");
+                        }
+                        for (int j = 0; j < comments.length(); j++) {
+                            if (j == 2) {
+                                break;
+                            }
+                            JSONObject commentsJSON = comments.getJSONObject(j);
+                            if (commentsJSON.optString("text") != null) {
+                                comment = commentsJSON.getString("text");
+                            }
+                            if (commentsJSON.optJSONObject("from") != null) {
+                                if (commentsJSON.getJSONObject("from").optString("username") != null) {
+                                    commentUserName = commentsJSON.getJSONObject("from").getString("username");
+                                }
+                            }
+                            if (j == 0) {
+                                photo.setComment1(commentUserName != null ? commentUserName : "", comment != null ? comment : "");
+                            } else {
+                                photo.setComment2(commentUserName != null ? commentUserName : "", comment != null ? comment : "");
+                            }
+                        }
+
                         // Add object to the array
                         photos.add(photo);
                     }

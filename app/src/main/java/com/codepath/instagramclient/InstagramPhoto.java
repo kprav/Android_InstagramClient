@@ -2,6 +2,11 @@ package com.codepath.instagramclient;
 
 public class InstagramPhoto {
 
+    private class Comment {
+        String commentUserName;
+        String comment;
+    }
+
     private String userName;
     private String caption;
     private String imageUrl;
@@ -12,6 +17,38 @@ public class InstagramPhoto {
     private int imageWidth;
     private int imageHeight;
     private int likesCount;
+    private Comment comment1;
+    private Comment comment2;
+
+    public String getComment1() {
+        if (comment1 != null) {
+            if (!comment1.commentUserName.equals("") && !comment1.comment.equals("")) {
+                return "<b> <font color=\"#0D47A1\">" + comment1.commentUserName + "</font> </b> &nbsp;" + comment1.comment;
+            }
+        }
+        return null;
+    }
+
+    public void setComment1(String commentUserName, String comment) {
+        comment1 = new Comment();
+        comment1.commentUserName = commentUserName;
+        comment1.comment = comment;
+    }
+
+    public String getComment2() {
+        if (comment2 != null) {
+            if (!comment2.commentUserName.equals("") && !comment2.comment.equals("")) {
+                return "<b> <font color=\"#0D47A1\">" + comment2.commentUserName + "</font> </b> &nbsp;" + comment2.comment;
+            }
+        }
+        return null;
+    }
+
+    public void setComment2(String commentUserName, String comment) {
+        comment2 = new Comment();
+        comment2.commentUserName = commentUserName;
+        comment2.comment = comment;
+    }
 
     public String getCreationTimeStr() {
         return creationTimeStr;
