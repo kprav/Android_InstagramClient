@@ -74,9 +74,9 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         viewHolder.rivProfilePic.setImageResource(0);
         viewHolder.ivPhoto.setImageResource(0);
         if (photo.getProfilePicUrl() != null && photo.getProfilePicUrl() != "")
-            Picasso.with(getContext()).load(photo.getProfilePicUrl()).placeholder(R.mipmap.ic_launcher).into(viewHolder.rivProfilePic);
+            Picasso.with(getContext()).load(photo.getProfilePicUrl()).placeholder(R.mipmap.app_icon).into(viewHolder.rivProfilePic);
         if (photo.getImageUrl() != null && photo.getImageUrl() != "")
-            Picasso.with(getContext()).load(photo.getImageUrl()).placeholder(R.mipmap.ic_launcher).resize(displayWidth, 0).into(viewHolder.ivPhoto);
+            Picasso.with(getContext()).load(photo.getImageUrl()).placeholder(R.mipmap.app_icon).resize(displayWidth, 0).into(viewHolder.ivPhoto);
         viewHolder.tvUserName.setText(Html.fromHtml("<b>" + photo.getUserName() + "</b>"));
         viewHolder.tvLocation.setText(photo.getLocation());
         viewHolder.tvCaption.setText(Html.fromHtml("<b> <font color=\"#0D47A1\">" + photo.getUserName() + "</font> </b> &nbsp;" + photo.getCaption()));
