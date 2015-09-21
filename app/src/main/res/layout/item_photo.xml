@@ -86,7 +86,7 @@
         android:paddingTop="10dp"
         android:adjustViewBounds="true"
         android:minHeight="50dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitXY" />
 
     <ImageView
         android:id="@+id/ivLikes"
