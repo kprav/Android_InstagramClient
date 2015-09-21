@@ -95,7 +95,7 @@ public class PhotosActivity extends AppCompatActivity {
                         if (photoJSON.optJSONObject("location") != null) {
                             if (photoJSON.getString("location") != null && !photoJSON.getString("location").equalsIgnoreCase("null")) {
                                 if (photoJSON.getJSONObject("location").optString("name") != null)
-                                location =photoJSON.getJSONObject("location").getString("name");
+                                    location = photoJSON.getJSONObject("location").getString("name");
                             }
                         }
                         if (photoJSON.optJSONObject("images") != null) {
@@ -127,38 +127,32 @@ public class PhotosActivity extends AppCompatActivity {
                         InstagramPhoto photo = new InstagramPhoto();
                         if (userName != null) {
                             photo.setUserName(userName);
-                        }
-                        else {
+                        } else {
                             photo.setUserName("");
                         }
                         if (profilePicUrl != null) {
                             photo.setProfilePicUrl(profilePicUrl);
-                        }
-                        else {
+                        } else {
                             photo.setProfilePicUrl("");
                         }
                         if (caption != null) {
                             photo.setCaption(caption);
-                        }
-                        else {
+                        } else {
                             photo.setCaption("");
                         }
                         if (location != null) {
                             photo.setLocation(location);
-                        }
-                        else {
+                        } else {
                             photo.setLocation("");
                         }
                         if (imageUrl != null) {
                             photo.setImageUrl(imageUrl);
-                        }
-                        else {
+                        } else {
                             photo.setImageUrl("");
                         }
                         if (creationTimeStr != null) {
                             photo.setCreationTimeStr(creationTimeStr);
-                        }
-                        else {
+                        } else {
                             photo.setCreationTimeStr("");
                         }
                         photo.setCreationTime(creationTime);
@@ -188,7 +182,7 @@ public class PhotosActivity extends AppCompatActivity {
     private String findRelativeCreationTime(long creationTime) {
         String creationTimeStrTemp = null;
         String creationTimeStr = null;
-        creationTimeStrTemp = DateUtils.getRelativeTimeSpanString(creationTime*1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL).toString();
+        creationTimeStrTemp = DateUtils.getRelativeTimeSpanString(creationTime * 1000, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL).toString();
         creationTimeStr = creationTimeStrTemp.replaceAll("ago", "");
         creationTimeStr = creationTimeStr.replaceAll("seconds", "s");
         creationTimeStr = creationTimeStr.replaceAll("second", "s");
